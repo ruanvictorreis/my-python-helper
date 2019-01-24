@@ -1,0 +1,17 @@
+Escreva uma função chamada “fibonacci” que recebe um inteiro (n) positivo e retorna o n-ésimo elemento da sequência de Fibonacci.
+
+def fibonacci(n):
+  """
+  >>> fibonacci(0) #
+  0
+  >>> fibonacci(1) # 
+  1
+  >>> fibonacci(2) # 
+  1
+  >>> fibonacci(3) # 
+  2
+  >>> fibonacci(4) #
+  3
+  """
+---
+ATENÇÃO: UTILIZE APENAS 2 ESPAÇOS PARA INDENTAÇÃO DO SEU CÓDIGO.

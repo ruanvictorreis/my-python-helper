@@ -1,4 +1,5 @@
-Escreva uma função chamada “fibonacci” que recebe um inteiro (n) positivo e retorna o n-ésimo elemento da sequência de Fibonacci.
+Escreva uma função chamada “fibonacci” que recebe um inteiro (n) positivo e retorna o n-ésimo elemento da sequência
+de Fibonacci.
 
 def fibonacci(n):
   """

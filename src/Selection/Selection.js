@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react'
 
-const selection = (props) => {
+const Selection = (props) => {
 	const fibonacci = 'fibonacci'
 	const sumOfSquares = 'sum_of_squares'
 	const isPrimeNumber = 'is_prime_number'
@@ -31,4 +31,4 @@ const selection = (props) => {
 	);
 }
 
-export default selection;
+export default Selection;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Container, Image } from 'semantic-ui-react';
 
-const header = (props) => {
+const MenuBar = (props) => {
     return (
       <div>
         <Menu fixed='top' inverted>
@@ -16,4 +16,4 @@ const header = (props) => {
     );
   }
   
-  export default header;
+  export default MenuBar;

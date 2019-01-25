@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "codemirror": "^5.43.0",
     "react": "^16.7.0",
+    "react-alert": "^2.4.0",
     "react-codemirror2": "^5.1.0",
     "react-dom": "^16.7.0",
     "react-highlight": "^0.12.0",

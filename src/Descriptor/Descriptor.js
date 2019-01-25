@@ -1,15 +1,20 @@
 import React from 'react';
 import Highlight from 'react-highlight';
-import { Container, Divider, Segment } from 'semantic-ui-react'
+import { Container, Divider, Segment, Header, Icon } from 'semantic-ui-react'
 
-const descriptor = (props) => {
+const Descriptor = (props) => {
 
   return (
     <div>
       <Segment>
+        <Header as='h4'>
+          <Icon name='bullhorn' />
+          <Header.Content>Problem Description</Header.Content>
+        </Header>
+
+        <Divider />
+
         <Container textAlign='justified'>
-          <b>Problem Description</b>
-          <Divider />
           <Highlight className="python">
             {props.description}
           </Highlight>
@@ -19,4 +24,4 @@ const descriptor = (props) => {
   );
 }
 
-export default descriptor;
+export default Descriptor;

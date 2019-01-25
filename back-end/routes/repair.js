@@ -30,7 +30,7 @@ router.post('/python/', function (request, response) {
 
 function getParameters(assignment) {
   const path = `./assignment/${assignment}/input`;
-  return FFileSystem.readFileSync(path, unicode).trim();
+  return FileSystem.readFileSync(path, unicode).trim();
 }
 
 function getRepairs(assignment, register){

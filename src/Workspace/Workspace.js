@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Grid } from 'semantic-ui-react';
 import Feedback from '../Feedback/Feedback';
 import CodeInput from '../CodeInput/CodeInput';
 import TestOutput from '../TestOutput/TestOutput';
+import Server from './Connection/Server';
 
 class Workspace extends Component {
 	constructor(props) {
@@ -15,17 +15,18 @@ class Workspace extends Component {
 			obtained: '',
 			expected: '',
 			studentCode: '',
-			server: '18.231.184.37',
 		}
+
+		this.server = new Server()
 	}
 
 	componentDidUpdate(props) {
 		if (props.assignment !== this.props.assignment) {
-			this.reset();
+			this.resetState();
 		}
 	}
 
-	reset = () => {
+	resetState = () => {
 		const state = {
 			repairs: [],
 			loading: false,
@@ -38,7 +39,7 @@ class Workspace extends Component {
 		this.setState(state);
 	}
 
-	submitCode = (studentCode) => {
+	assertCode = (studentCode) => {
 		this.toggleLoader();
 		this.setStudentCode(studentCode);
 
@@ -48,60 +49,41 @@ class Workspace extends Component {
 			assignment: this.props.assignment
 		};
 
-		this.assertSubmission(submission);
+		this.server.assert(submission, this);
 	}
 
-	assertSubmission = (submission) => {
-		const { modalCongrats } = this.props;
-		const { toggleLoader, showTestOutput, repairsGeneration } = this;
-
-		axios.post(`http://${this.state.server}:8081/api/assert/`, submission)
-			.then(function (response) {
-				const result = response.data;
-
-				if (result.isCorrect) {
-					toggleLoader();
-					modalCongrats();
-				} else {
-					showTestOutput(result);
-					repairsGeneration(result);
-				}
-			});
-	}
-
-	showTestOutput = (asserts) => {
-		if (asserts.syntaxError) {
-			this.props.syntaxError();
+	assertHandler(result) {
+		if (result.syntaxError) {
 			this.toggleLoader();
+			this.props.syntaxError();
 			return;
 		}
 
+		if (result.isCorrect) {
+			this.toggleLoader();
+			this.props.modalCongrats();
+		} else {
+			this.showTestOutput(result);
+			this.server.repairCode(result, this);
+		}
+	}
+
+	showTestOutput = (assert) => {
 		this.setState({
-			expected: asserts.expected,
-			obtained: asserts.obtained,
-			failedTest: asserts.failedTest,
+			expected: assert.expected,
+			obtained: assert.obtained,
+			failedTest: assert.failedTest
 		});
 	}
 
-	repairsGeneration = (submission) => {
-		if (submission.syntaxError) {
-			return;
+	repairHandler = (result) => {
+		this.toggleLoader();
+
+		if (result.isRepaired) {
+			this.setRepairs(result.repairs)
+		} else {
+			this.props.repairsFail()
 		}
-
-		const { toggleLoader, setRepairs } = this;
-		const { repairsFail } = this.props;
-
-		axios.post(`http://${this.state.server}:8081/api/clara/python/`, submission)
-			.then(function (response) {
-				const result = response.data
-				toggleLoader();
-
-				if (result.isRepaired) {
-					setRepairs(result.repairs)
-				} else {
-					repairsFail()
-				}
-			});
 	}
 
 	setRepairs = (repairs) => {
@@ -128,7 +110,7 @@ class Workspace extends Component {
 						<Grid.Column width={8}>
 							<CodeInput
 								studentCode={currentCode}
-								submitCode={this.submitCode}
+								assertCode={this.assertCode}
 								isLoading={this.state.loading} />
 						</Grid.Column>
 

@@ -5,37 +5,37 @@ require('codemirror/mode/xml/xml');
 require('codemirror/mode/python/python');
 
 const CodeInput = (props) => {
-	const options = {
-		mode: 'python',
-		lineNumbers: true
-	};
+  const options = {
+    mode: 'python',
+    lineNumbers: true
+  };
 
-	var studentCode = props.studentCode
+  var studentCode = props.studentCode
 
-	return (
-		<div>
-			<Segment>
-				<Header as='h4'>
-					<Icon name='code' />
-					<Header.Content>Your Code</Header.Content>
-				</Header>
+  return (
+    <div>
+      <Segment>
+        <Header as='h4'>
+          <Icon name='code' />
+          <Header.Content>Your Code</Header.Content>
+        </Header>
 
-				<Divider />
+        <Divider />
 
-				<CodeMirror
-					value={studentCode}
-					options={options}
-					onChange={(editor, data, value) => studentCode = value} />
+        <CodeMirror
+          value={studentCode}
+          options={options}
+          onChange={(editor, data, value) => studentCode = value} />
 
-				<br />
+        <br />
 
-				<Button primary loading={props.isLoading}
-					onClick={() => props.submitCode(studentCode)}>
-					Submit
+        <Button primary loading={props.isLoading}
+          onClick={() => props.assertCode(studentCode)}>
+          Submit
        </Button>
-			</Segment>
-		</div>
-	);
+      </Segment>
+    </div>
+  );
 }
 
 export default CodeInput;

@@ -8,16 +8,15 @@ import Server from './Connection/Server';
 class Workspace extends Component {
 	constructor(props) {
 		super(props);
+		this.server = new Server();
 		this.state = {
 			repairs: [],
 			loading: false,
 			failedTest: '',
 			obtained: '',
 			expected: '',
-			studentCode: '',
-		}
-
-		this.server = new Server()
+			studentCode: ''
+		};
 	}
 
 	componentDidUpdate(props) {
@@ -63,8 +62,9 @@ class Workspace extends Component {
 			this.toggleLoader();
 			this.props.modalCongrats();
 		} else {
+			const callback = this.repairHandler;
+			this.server.repairCode(result, callback);
 			this.showTestOutput(result);
-			this.server.repairCode(result, this);
 		}
 	}
 
@@ -100,7 +100,7 @@ class Workspace extends Component {
 	}
 
 	render() {
-		const currentCode = this.state.studentCode !== '' ?
+		const currentCode = this.state.studentCode ?
 			this.state.studentCode : this.props.initialCode
 
 		return (

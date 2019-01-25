@@ -13,7 +13,7 @@ class Server {
   }
 
   repairCode = (submission, callback) => {
-    axios.post(`http://${this.host}:8081/api/clara/python/`, submission)
+    axios.post(`http://${this.host}:8081/api/repair/python/`, submission)
       .then(function (response) {
         callback(response.data)
       });

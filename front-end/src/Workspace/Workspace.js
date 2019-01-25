@@ -79,7 +79,7 @@ class Workspace extends Component {
 	repairHandler = (result) => {
 		this.toggleLoader();
 
-		if (result.isRepaired) {
+		if (result.repaired) {
 			this.setRepairs(result.repairs)
 		} else {
 			this.props.repairsFail()

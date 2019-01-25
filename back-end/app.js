@@ -1,17 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+let express = require('express');
+let path = require('path');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var quiz = require('./routes/quiz-service');
-var clara = require('./routes/clara-service');
-var assert = require('./routes/assert-service');
-var tracediff = require('./routes/tracediff-service');
+let index = require('./routes/index');
+let repair = require('./routes/repair');
+let assert = require('./routes/assert');
 
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,10 +29,8 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', index);
-app.use('/api/quiz', quiz);
-app.use('/api/clara', clara);
+app.use('/api/repair', repair);
 app.use('/api/assert', assert);
-app.use('/api/tracediff', tracediff);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

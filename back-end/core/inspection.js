@@ -1,5 +1,6 @@
 let Status = require('./status');
-let FileUtils = require('../util/fileUtils');
+let FileSystem = require('fs');
+let unicode = 'utf-8';
 
 class Inspection {
   constructor(register, assignment, studentCode) {
@@ -8,13 +9,15 @@ class Inspection {
     this.studentCode = studentCode;
 
     this.status = new Status();
-
+    this.assertList = [];
+    this.errorPattern = '';
     this.inspectionFile = '';
-    this.assertList = getAssertList(assignment);
-    this.errorPattern = getErrorMessagePattern();
   }
 
   createScript() {
+    this.assertList = this.getAssertList(this.assignment);
+    this.errorPattern = this.getErrorMessagePattern();
+
     let scriptContent = this.studentCode + '\n';
 
     for (let assert of this.assertList) {
@@ -30,28 +33,24 @@ class Inspection {
       scriptContent = scriptContent + '\n' + assertLine;
     }
 
-    const scriptPath = `./assignments/${this.assignment}/asserts/${this.register}.py`;
+    const scriptPath = `./assignment/${this.assignment}/asserts/${this.register}.py`;
     return this.writeScript(scriptPath, scriptContent);
   }
 
   writeScript(scriptPath, content) {
-    try {
-      FileUtils.writeContent(scriptPath, content);
-      this.inspectionFile = scriptPath;
-      return scriptPath;
-    }
-    catch (err) {
-      console.log(err);
-    }
+    FileSystem.writeFileSync(scriptPath, content, unicode);
+    this.inspectionFile = scriptPath;
+    return scriptPath;
   }
 
   getErrorMessagePattern() {
-    return FileUtils.readFileContent(`./assignment/error_msg`);
+    const path = `./assignment/error_msg`
+    return FileSystem.readFileSync(path, unicode).trim();
   }
 
   getAssertList(assignment) {
     const path = `./assignment/${assignment}/asserts/assert_expr`;
-    return FileUtils.readFileLines(path);
+    return FileSystem.readFileSync(path, unicode).split('\n')
   }
 
   analysis(error) {
@@ -61,12 +60,12 @@ class Inspection {
   report() {
     const status = this.status;
     const report = {
-      register : this.register,
+      register: this.register,
       assignment: this.assignment,
       studentCode: this.studentCode,
       ...status
     };
-    
+
     return report;
   }
 }

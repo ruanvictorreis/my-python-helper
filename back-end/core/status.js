@@ -30,8 +30,8 @@ class Status {
 		}
 	}
 
-	loadTestCase(errorMsg) {
-		let splited = errorMsg.split(/>>>|#/);
+	loadTestCase() {
+		let splited = this.errorMsg.split(/>>>|#/);
 		let failedTest = splited[1].trim();
 		let expected = splited[3].trim();
 		let obtained = splited[5].trim();

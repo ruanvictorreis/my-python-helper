@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var PythonShell = require('python-shell');
-var FileUtils = require('../util/fileUtils');
+let express = require('express');
+let router = express.Router();
+let FileSystem = require('fs');
+let PythonShell = require('python-shell');
+let unicode = 'utf-8';
 
 router.post('/python/', function (request, response) {
   const attempt = request.body;
@@ -29,12 +30,12 @@ router.post('/python/', function (request, response) {
 
 function getParameters(assignment) {
   const path = `./assignment/${assignment}/input`;
-  return FileUtils.readContent(path);
+  return FFileSystem.readFileSync(path, unicode).trim();
 }
 
 function getRepairs(assignment, register){
   const path = `./assignment/${assignment}/repairs/${register}.py`;
-  return FileUtils.readLines(path);
+  return FileSystem.readFileSync(path, unicode).trim().split('\n')
 }
 
 module.exports = router;

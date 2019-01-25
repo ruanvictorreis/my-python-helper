@@ -4,11 +4,12 @@ let PythonShell = require('python-shell');
 let Inspection = require('../core/inspection.js');
 
 router.post('/', function (request, response) {
+  
   const attempt = request.body;
   const register = attempt.register;
   const assignment = attempt.assignment;
   const studentCode = attempt.studentCode;
-
+  
   const inspection = new Inspection(register, assignment, studentCode);
   const inspectionScript = inspection.createScript();
   
@@ -24,7 +25,7 @@ router.post('/', function (request, response) {
 
   pyScript.end(function (error) {
     clearTimeout(pythonKiller);
-
+    
     if (error) {
       inspection.analysis(error);
     }

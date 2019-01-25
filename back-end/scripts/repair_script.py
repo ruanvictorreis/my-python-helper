@@ -7,7 +7,7 @@ parameters = sys.argv[3]
 student_code = sys.argv[4]
 
 file_name = student_id + '.py'
-assignment_path = './assignments/{0}'.format(assignment)
+assignment_path = './assignment/{0}'.format(assignment)
 attempt_path = '{0}/attempts/{1}'.format(assignment_path, file_name)
 
 with open(attempt_path, 'w') as _file:

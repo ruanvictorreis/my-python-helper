@@ -43,7 +43,7 @@ class Workspace extends Component {
 		this.setStudentCode(studentCode);
 
 		const submission = {
-			register: 'default',
+			register: 'defaultUser',
 			studentCode: studentCode,
 			assignment: this.props.assignment
 		};

@@ -4,40 +4,28 @@ import AlertContainer from 'react-alert';
 import MenuBar from './MenuBar/MenuBar';
 import Selection from './Selection/Selection';
 import Descriptor from './Descriptor/Descriptor';
-import CodeInput from './CodeInput/CodeInput';
-import TestOutput from './TestOutput/TestOutput';
-import Feedback from './Feedback/Feedback';
 import { Grid } from 'semantic-ui-react';
 import Congrats from './Congrats/Congrats';
+import Workspace from './Workspace/Workspace';
 
 class App extends Component {
   state = {
     assignment: 'sum_of_squares',
-    server: '18.231.184.37',
     description: '',
-    studentCode: '',
-    failedTest: '',
-    obtained: '',
-    expected: '',
-    repairs: [],
-    loading: false,
+    initialCode: '',
     showCongrats: false,
   }
 
   componentDidMount() {
     const { assignment } = this.state;
     this.setDescription(assignment);
-    this.getCodeLayout(assignment);
+    this.setInitialCode(assignment);
   }
 
   setAssignment = (e, { assignment }) => {
     this.setState({ assignment: assignment });
     this.setDescription(assignment);
-    this.getCodeLayout(assignment);
-  }
-
-  setRepairs = (repairs) => {
-    this.setState({ repairs: repairs });
+    this.setInitialCode(assignment);
   }
 
   setDescription = (assignment) => {
@@ -47,90 +35,16 @@ class App extends Component {
       });
   }
 
-  setStudentCode = (newCode) => {
-    this.setState({ studentCode: newCode });
-  }
-
-  getCodeLayout = (assignment) => {
+  setInitialCode = (assignment) => {
     axios.get(`data/initial/${assignment}.py`)
       .then((response) => {
-        this.setStudentCode(response.data)
+        this.setState({ initialCode: response.data })
       });
-  }
-
-  toggleLoader = () => {
-    const { loading } = this.state;
-    this.setState({ loading: !loading });
   }
 
   toggleCongrats = () => {
     const { showCongrats } = this.state;
     this.setState({ showCongrats: !showCongrats });
-  }
-
-  submitCode = (studentCode) => {
-    this.setStudentCode(studentCode);
-    this.toggleLoader();
-
-    var submission = {
-      register: 'default',
-      studentCode: studentCode,
-      assignment: this.state.assignment
-    };
-
-    this.assertSubmission(submission);
-  }
-
-  assertSubmission = (submission) => {
-    const { toggleLoader, toggleCongrats,
-      showTestOutput, repairsGeneration } = this;
-
-    axios.post(`http://${this.state.server}:8081/api/assert/`, submission)
-      .then(function (response) {
-        const assertResult = response.data;
-
-        if (assertResult.isCorrect) {
-          toggleCongrats();
-          toggleLoader();
-        } else {
-          showTestOutput(assertResult);
-          repairsGeneration(assertResult);
-        }
-      });
-  }
-
-  showTestOutput = (assertResult) => {
-    if (assertResult.syntaxError) {
-      this.syntaxError();
-      this.toggleLoader();
-      return;
-    }
-
-    this.setState({
-      expected: assertResult.expected,
-      obtained: assertResult.obtained,
-      failedTest: assertResult.failedTest,
-    });
-  }
-
-  repairsGeneration = (submission) => {
-    if (submission.syntaxError) {
-      return;
-    }
-
-    const { toggleLoader, setRepairs, repairsFail } = this;
-
-    axios.post(`http://${this.state.server}:8081/api/clara/python/`, submission)
-      .then(function (response) {
-        const repairResult = response.data
-        toggleLoader();
-
-        if (repairResult.isRepaired) {
-          setRepairs(repairResult.repairs)
-        } else {
-          repairsFail()
-        }
-      });
   }
 
   syntaxError = () => {
@@ -154,11 +68,11 @@ class App extends Component {
       <div>
         <MenuBar title='My Python Helper'
           imageSrc='./logo.png' />
-
+       
         <AlertContainer ref={a => this.msg = a}
           {...alertOptions} />
 
-        <Congrats view={this.state.showCongrats}
+        <Congrats show={this.state.showCongrats}
           close={this.toggleCongrats} />
 
         <Grid centered style={{ margin: '5.0em' }}>
@@ -174,24 +88,12 @@ class App extends Component {
           </Grid.Row>
 
           <Grid.Row>
-            <Grid.Column width={7}>
-              <CodeInput
-                studentCode={this.state.studentCode}
-                submitCode={this.submitCode}
-                isLoading={this.state.loading} />
-            </Grid.Column>
-
-            <Grid.Column width={7}>
-              <Grid.Row>
-                <TestOutput failedTest={this.state.failedTest}
-                  obtained={this.state.obtained}
-                  expected={this.state.expected} />
-              </Grid.Row>
-              <br />
-
-              <Grid.Row>
-                <Feedback repairs={this.state.repairs} />
-              </Grid.Row>
+            <Grid.Column width={14}>
+              <Workspace assignment={this.state.assignment}
+                initialCode={this.state.initialCode}
+                syntaxError={this.syntaxError}
+                repairsFail={this.repairsFail}
+                modalCongrats={this.toggleCongrats} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

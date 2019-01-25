@@ -12,12 +12,9 @@ const Congrats = (props) => {
 
 	return (
 		<div>
-			<Modal
-				size='small'
-				open={props.view}
-				style={inlineStyle.modal}
-				closeOnEscape={false}
-				closeOnRootNodeClick={false}>
+			<Modal size='small'
+				open={props.show}
+				style={inlineStyle.modal}>
 
 				<Modal.Header>Congrats!</Modal.Header>
 

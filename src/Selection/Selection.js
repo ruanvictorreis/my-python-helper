@@ -6,24 +6,30 @@ const Selection = (props) => {
 	const sumOfSquares = 'sum_of_squares'
 	const isPrimeNumber = 'is_prime_number'
 
+	const selectedColor = 'black'
+	const unselectedColor = 'grey'
+
 	return (
 		<div>
 			<Button.Group size='medium'>
 				<Button basic assignment={sumOfSquares}
 					onClick={props.changeSelection}
-					color={props.selection === sumOfSquares ? 'black' : 'grey'}>
+					color={props.selection === sumOfSquares ?
+						selectedColor : unselectedColor}>
 					Sum of Squares
 					</Button>
 
 				<Button basic assignment={isPrimeNumber}
 					onClick={props.changeSelection}
-					color={props.selection === isPrimeNumber ? 'black' : 'grey'}>
+					color={props.selection === isPrimeNumber ?
+						selectedColor : unselectedColor}>
 					Prime Numbers
 					</Button>
 
 				<Button basic assignment={fibonacci}
 					onClick={props.changeSelection}
-					color={props.selection === fibonacci ? 'black' : 'grey'}>
+					color={props.selection === fibonacci ?
+						selectedColor : unselectedColor}>
 					Fibonacci
 					</Button>
 			</Button.Group>

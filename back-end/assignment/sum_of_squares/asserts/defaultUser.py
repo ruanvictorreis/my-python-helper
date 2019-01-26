@@ -1,5 +1,8 @@
 def sum_of_squares(n):
-  return 10
+  total = 0
+  for i in range(n):
+    total = total + i
+  return total
 
 assert sum_of_squares(5) == 55, '>>> sum_of_squares(5)\n    # Error: expected\n    #     55\n    # but got\n    #     %s' % sum_of_squares(5)
 assert sum_of_squares(4) == 30, '>>> sum_of_squares(4)\n    # Error: expected\n    #     30\n    # but got\n    #     %s' % sum_of_squares(4)

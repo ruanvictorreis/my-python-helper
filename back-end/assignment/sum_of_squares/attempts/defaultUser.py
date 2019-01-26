@@ -1,2 +1,5 @@
 def sum_of_squares(n):
-  return 10
+  total = 0
+  for i in range(n):
+    total = total + i
+  return total

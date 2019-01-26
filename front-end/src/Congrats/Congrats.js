@@ -2,37 +2,37 @@ import React from 'react';
 import { Modal, Icon, Header, Button } from 'semantic-ui-react';
 
 const Congrats = (props) => {
-	const inlineStyle = {
-		modal: {
-			marginTop: '0px !important',
-			marginLeft: 'auto',
-			marginRight: 'auto'
-		}
-	};
+  const inlineStyle = {
+    modal: {
+      marginTop: '0px !important',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }
+  };
 
-	return (
-		<div>
-			<Modal size='small'
-				open={props.show}
-				style={inlineStyle.modal}>
+  return (
+    <div>
+      <Modal size='small'
+        open={props.show}
+        style={inlineStyle.modal}>
 
-				<Modal.Header>Congrats!</Modal.Header>
+        <Modal.Header>Congrats!</Modal.Header>
 
-				<Modal.Content image>
-					<Icon name="check circle outline" color='teal' size='massive' />
-					<Modal.Description>
-						<Header>Your code is correct! Now you can try another problems.</Header>
-					</Modal.Description>
-				</Modal.Content>
+        <Modal.Content image>
+          <Icon name="check circle outline" color='teal' size='massive' />
+          <Modal.Description>
+            <Header>Your code is correct! Now you can try another problems.</Header>
+          </Modal.Description>
+        </Modal.Content>
 
-				<Modal.Actions>
-					<Button color='teal' icon='close' labelPosition='right'
-						content="Close"
-						onClick={props.close} />
-				</Modal.Actions>
-			</Modal>
-		</div>
-	);
+        <Modal.Actions>
+          <Button color='teal' icon='close' labelPosition='right'
+            content="Close"
+            onClick={props.close} />
+        </Modal.Actions>
+      </Modal>
+    </div>
+  );
 }
 
 export default Congrats;

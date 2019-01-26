@@ -14,7 +14,7 @@ router.post('/python/', function (request, response) {
   let result = attempt;
   const args = [register, assignment, parameters, studentCode];
 
-  PythonShell.run('./scripts/repair_script.py', { args: args }, (error) => {
+  PythonShell.run('../scripts/repair_script.py', { args: args }, (error) => {
     if (error) {
       result.repaired = false;
       result.repairs = [];

@@ -2,8 +2,7 @@ import axios from 'axios';
 
 class Server {
   constructor() {
-    //this.host = '18.231.184.37';
-    this.host = 'localhost';
+    this.host = '18.231.184.37';
   }
 
   assert = (submission, context) => {

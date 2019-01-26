@@ -14,7 +14,7 @@ router.post('/python/', function (request, response) {
   let result = attempt;
   const args = [register, assignment, parameters, studentCode];
 
-  PythonShell.run('../scripts/repair_script.py', { args: args }, (error) => {
+  PythonShell.run('./scripts/repair_script.py', { args: args }, (error) => {
     if (error) {
       result.repaired = false;
       result.repairs = [];
@@ -33,7 +33,7 @@ function getParameters(assignment) {
   return FileSystem.readFileSync(path, unicode).trim();
 }
 
-function getRepairs(assignment, register){
+function getRepairs(assignment, register) {
   const path = `./assignment/${assignment}/repairs/${register}.py`;
   return FileSystem.readFileSync(path, unicode).trim().split('\n')
 }
